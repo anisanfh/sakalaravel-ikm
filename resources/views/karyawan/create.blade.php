@@ -1,0 +1,229 @@
+{{-- resources/views/karyawan/create.blade.php --}}
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Karyawan Baru</title>
+
+    <!-- Bootstrap 4 CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        .card {
+            margin-top: 30px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="{{ route('karyawan.index') }}">
+                <i class="fas fa-arrow-left"></i> Kembali
+            </a>
+            <div class="navbar-nav ml-auto">
+                <span class="navbar-text text-white">
+                    Form Tambah Karyawan
+                </span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="card form-container">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-user-plus"></i> Tambah Karyawan Baru
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul class="mb-0">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                        <form action="{{ route('karyawan.store') }}" method="POST">
+                            @csrf
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="nama_karyawan">Nama Karyawan <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text"
+                                            class="form-control @error('nama_karyawan') is-invalid @enderror"
+                                            id="nama_karyawan" name="nama_karyawan" value="{{ old('nama_karyawan') }}"
+                                            required>
+                                        @error('nama_karyawan')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="jabatan">Jabatan <span class="text-danger">*</span></label>
+                                        <select class="form-control @error('jabatan') is-invalid @enderror"
+                                            id="jabatan" name="jabatan" required>
+                                            <option value="">Pilih Jabatan</option>
+                                            <option value="operator"
+                                                {{ old('jabatan') == 'operator' ? 'selected' : '' }}>Operator</option>
+                                            <option value="supervisor"
+                                                {{ old('jabatan') == 'supervisor' ? 'selected' : '' }}>Supervisor
+                                            </option>
+                                            <option value="pemilik" {{ old('jabatan') == 'pemilik' ? 'selected' : '' }}>
+                                                Pemilik</option>
+                                        </select>
+                                        @error('jabatan')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                            id="email" name="email" value="{{ old('email') }}">
+                                        @error('email')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="no_telp">No. Telepon</label>
+                                        <input type="text"
+                                            class="form-control @error('no_telp') is-invalid @enderror" id="no_telp"
+                                            name="no_telp" value="{{ old('no_telp') }}">
+                                        @error('no_telp')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="password">Password <span class="text-danger">*</span></label>
+                                        <input type="password"
+                                            class="form-control @error('password') is-invalid @enderror" id="password"
+                                            name="password" required>
+                                        @error('password')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="password_confirmation">Konfirmasi Password <span
+                                                class="text-danger">*</span></label>
+                                        <input type="password" class="form-control" id="password_confirmation"
+                                            name="password_confirmation" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="gaji_harian">Gaji Harian <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Rp</span>
+                                            </div>
+                                            <input type="number"
+                                                class="form-control @error('gaji_harian') is-invalid @enderror"
+                                                id="gaji_harian" name="gaji_harian"
+                                                value="{{ old('gaji_harian', 100000) }}" min="0" required>
+                                            @error('gaji_harian')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="jml_target">Target Harian <span
+                                                class="text-danger">*</span></label>
+                                        <input type="number"
+                                            class="form-control @error('jml_target') is-invalid @enderror"
+                                            id="jml_target" name="jml_target" value="{{ old('jml_target', 500) }}"
+                                            min="0" required>
+                                        @error('jml_target')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="status_karyawan">Status <span class="text-danger">*</span></label>
+                                        <select class="form-control @error('status_karyawan') is-invalid @enderror"
+                                            id="status_karyawan" name="status_karyawan" required>
+                                            <option value="aktif"
+                                                {{ old('status_karyawan') == 'aktif' ? 'selected' : 'selected' }}>Aktif
+                                            </option>
+                                            <option value="nonaktif"
+                                                {{ old('status_karyawan') == 'nonaktif' ? 'selected' : '' }}>Nonaktif
+                                            </option>
+                                        </select>
+                                        @error('status_karyawan')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="alamat">Alamat</label>
+                                <textarea class="form-control @error('alamat') is-invalid @enderror" id="alamat" name="alamat" rows="3">{{ old('alamat') }}</textarea>
+                                @error('alamat')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group text-center mt-4">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-save"></i> Simpan Karyawan
+                                </button>
+                                <a href="{{ route('karyawan.index') }}" class="btn btn-secondary btn-lg">
+                                    <i class="fas fa-times"></i> Batal
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
